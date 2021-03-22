@@ -1,10 +1,17 @@
-<section *ngIf="info$ | async as matchInfo" class="meta">
-    <p class="competition">{{matchInfo.competition}}</p>
+<!--<section *ngIf="info$ | async as matchInfo" class="meta">-->
+<!--    <p class="competition">{{matchInfo.competition}}</p>-->
 
-    <div class="scores">
-        <app-goal>
-            <img [src]="matchInfo.homeTeam.logo" [alt]="matchInfo.homeTeam.name" class="avatar">
-        </app-goal>
-        <app-goal></app-goal>
-    </div>
-</section>
+<!--    <div class="scores">-->
+<!--        <app-goal>-->
+<!--            <img [src]="matchInfo.homeTeam.logo" [alt]="matchInfo.homeTeam.name" class="avatar">-->
+<!--        </app-goal>-->
+<!--        <app-goal></app-goal>-->
+<!--    </div>-->
+<!--</section>-->
+
+<app-page class="full">
+    <ng-container *ngIf="user$ | async as toolbarVm">
+        <app-toolbar [vm]="toolbarVm"></app-toolbar>
+    </ng-container>
+    <router-outlet></router-outlet>
+</app-page>

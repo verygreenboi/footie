@@ -1,19 +1,22 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { MatchAction, NewMatch } from 'src/app/+state/match/match.actions';
-import { Match, MatchMetaData } from 'src/app/models';
+import { Action, createSelector, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
+import { GetCompetition, MatchAction } from 'src/app/+state/match/match.actions';
+import { Competition, CompetitionResponse, Match } from 'src/app/models';
+import { MatchService } from 'src/app/core/match.service';
+import { Injectable } from '@angular/core';
 
 export interface MatchStateModel {
     items: string[];
-    match?: Match;
+    competitionRes: CompetitionResponse;
 }
 
 @State<MatchStateModel>({
-    name: 'match',
-    defaults: {
-        items: []
-    }
+    name: 'match'
 })
-export class MatchState {
+@Injectable()
+export class MatchState implements NgxsOnInit {
+
+    constructor(private matchService: MatchService) {
+    }
 
     @Selector()
     public static getState(state: MatchStateModel): MatchStateModel {
@@ -21,21 +24,33 @@ export class MatchState {
     }
 
     @Selector()
-    public static getMatchInformation(state: MatchStateModel): MatchMetaData {
-      return state?.match?.meta ?? {
-        homeTeam: {
-          name: '',
-          logo: ''
-        },
-        awayTeam: {
-          name: '',
-          logo: ''
-        },
-        venue: '',
-        competition: '',
-        date: new Date()
-      };
+    static getCompetitionResponse(state: MatchStateModel): CompetitionResponse {
+        return state.competitionRes;
     }
+
+    @Selector([MatchState.getCompetitionResponse])
+    static getCompetition(response: CompetitionResponse): Competition {
+        return response.competition;
+    }
+
+    @Selector([MatchState.getCompetitionResponse])
+    static getMatches(state: MatchStateModel, response: CompetitionResponse): Match[] {
+        return response.matches ?? [];
+    }
+
+    @Selector([MatchState.getMatches])
+    static getCurrentMatchDay(state: MatchStateModel, matches: Match[]): number {
+        const season = matches[0]?.season;
+        if (!season) {
+            return 0;
+        }
+        return season.currentMatchday;
+    }
+
+    ngxsOnInit({ dispatch }: StateContext<any>): void {
+        dispatch(new GetCompetition());
+    }
+
 
     @Action(MatchAction)
     public add(ctx: StateContext<MatchStateModel>, { payload }: MatchAction): void {
@@ -44,10 +59,11 @@ export class MatchState {
         ctx.setState(stateModel);
     }
 
-    @Action(NewMatch)
-    public newMatch({ dispatch, setState, patchState }: StateContext<MatchStateModel>, { data }: NewMatch): void {
-      patchState({
-        match: data
-      });
+    @Action(GetCompetition)
+    async getCompetition(ctx: StateContext<MatchStateModel>): Promise<void> {
+        const competitionRes = await this.matchService.getFixtures().toPromise();
+        ctx.patchState({
+            competitionRes
+        });
     }
 }

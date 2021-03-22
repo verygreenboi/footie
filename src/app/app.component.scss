@@ -2,29 +2,30 @@
   display: flex;
   flex-direction: column;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  background-color: #f5f5fa;
 }
 
-.meta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  p.competition {
-    font-size: .75rem;
-  }
-
-  .scores {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 0;
-    padding: .25em .25em 0;
-    width: calc(100% - .5rem);
-
-    .avatar {
-      display: block;
-      width: 2.5rem;
-      height: auto;
-    }
-  }
-}
+//.meta {
+//  display: flex;
+//  flex-direction: column;
+//  align-items: center;
+//
+//  p.competition {
+//    font-size: .75rem;
+//  }
+//
+//  .scores {
+//    display: grid;
+//    grid-template-columns: 1fr 1fr;
+//    grid-column-gap: 0;
+//    padding: .25em .25em 0;
+//    width: calc(100% - .5rem);
+//
+//    .avatar {
+//      display: block;
+//      width: 2.5rem;
+//      height: auto;
+//    }
+//  }
+//}

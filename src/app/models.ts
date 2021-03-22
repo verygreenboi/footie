@@ -1,45 +1,72 @@
-export interface Goal {
-  goals: number,
-  scorers: string[];
+export interface CompetitionResponse {
+    count: number;
+    filters: Filters;
+    competition: Competition;
+    matches: Match[];
 }
 
-export interface Team {
-  name: string;
-  logo: string;
+export interface Competition {
+    id: number;
+    area: Area;
+    name: string;
+    code: string;
+    plan: string;
+    lastUpdated: Date;
 }
 
-export enum MatchEventType {
-  GOAL,
-  MISS,
-  MATCH_START,
-  MATCH_END,
-  HALF_TIME,
-  FOUL,
-  PENALTY,
-  YELLOW_CARD,
-  RED_CARD,
-  INJURY,
-  SUBSTITUTION,
-  OFFSIDE,
-  NO_EVENT
+export interface Area {
+    id: number;
+    name: string;
 }
 
-export interface MatchEvent {
-  type: MatchEventType;
-  description?: string;
-  time?: Date;
-  eventMeta?: { [key: string]: unknown };
-}
-
-export interface MatchMetaData {
-  homeTeam: Team;
-  awayTeam: Team;
-  venue: string;
-  competition: string;
-  date: Date;
+export interface Filters {
 }
 
 export interface Match {
-  meta: MatchMetaData;
-  events: MatchEvent[];
+    id: number;
+    season: Season;
+    utcDate: Date;
+    status: string;
+    matchday: number;
+    stage: string;
+    group: string;
+    lastUpdated: Date;
+    odds: Odds;
+    score: Score;
+    homeTeam: Area;
+    awayTeam: Area;
+    referees: Referee[];
 }
+
+export interface Odds {
+    msg: string;
+}
+
+export interface Referee {
+    id: number;
+    name: string;
+    role: string;
+    nationality: null | string;
+}
+
+export interface Score {
+    winner: null | string;
+    duration: string;
+    fullTime: ExtraTime;
+    halfTime: ExtraTime;
+    extraTime: ExtraTime;
+    penalties: ExtraTime;
+}
+
+export interface ExtraTime {
+    homeTeam: number | null;
+    awayTeam: number | null;
+}
+
+export interface Season {
+    id: number;
+    startDate: Date;
+    endDate: Date;
+    currentMatchday: number;
+}
+
