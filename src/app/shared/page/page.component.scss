@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+
+  &.full {
+    min-height: 100%;
+    overflow-y: scroll;
+  }
+
+}

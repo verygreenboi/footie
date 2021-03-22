@@ -1,0 +1,30 @@
+<h2>{{title}}</h2>
+
+<ng-container *ngIf="matchDayFixtures | async as fixtures">
+    <ul>
+        <li class="previous" *ngIf="fixtures.previous"><a routerLink="." [queryParams]="{'matchDay': fixtures.previous}"><< Match day {{fixtures.previous}}</a></li>
+        <li class="current">Match day {{fixtures.matchDay}}</li>
+        <li class="next" *ngIf="fixtures.next"><a routerLink="." [queryParams]="{'matchDay': fixtures.next}">Match day {{fixtures.next}} >></a></li>
+    </ul>
+
+    <div class="fixtures">
+        <app-card *ngFor="let match of fixtures.matches">
+            <div class="match">
+                <div [ngClass]="{'winner': match.score.winner === 'HOME_TEAM'}" class="team">
+                    <p>{{match.homeTeam.name}}</p>
+                    <p>{{match.score.fullTime.homeTeam}}</p>
+                </div>
+                <div class="meta">
+                    <p>{{match.utcDate | date : 'dd.MM.yyyy'}}</p>
+                    <p>{{match.utcDate | date : 'hh:mm a' | lowercase}}</p>
+                </div>
+                <div [ngClass]="{'winner': match.score.winner === 'AWAY_TEAM'}" class="team">
+                    <p>{{match.awayTeam.name}}</p>
+                    <p>{{match.score.fullTime.awayTeam}}</p>
+                </div>
+            </div>
+        </app-card>
+
+    </div>
+
+</ng-container>

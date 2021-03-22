@@ -1,0 +1,8 @@
+<h1>Login</h1>
+<app-card>
+    <form [formGroup]="loginGroup" (ngSubmit)="login()">
+        <label for="email">Email</label>
+        <input formControlName="email" type="text" id="email">
+        <button>Submit</button>
+    </form>
+</app-card>
